@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sales-plus="http://www.mulesoft.org/schema/mule/sales-plus" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/sales-plus http://www.mulesoft.org/schema/mule/sales-plus/current/mule-sales-plus.xsd
+http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd">
+	 <context:property-placeholder location="connectors.properties"/>
+    <sales-plus:config name="SalesPlus__Basic_Auth" UserName="${salesplus.username}" AccessKey="${salesplus.AccessKey}" apiUrl="${salesplus.url}" doc:name="SalesPlus: Basic Auth"/>
+    <sfdc:config name="Salesforce__Basic_authentication" username="${sfdc.user}" password="${sfdc.password}" url="${sfdc.url}" doc:name="Salesforce: Basic authentication"/>
+	 
+</mule>

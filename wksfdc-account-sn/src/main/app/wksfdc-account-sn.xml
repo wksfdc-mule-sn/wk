@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sales-plus="http://www.mulesoft.org/schema/mule/sales-plus" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/sales-plus http://www.mulesoft.org/schema/mule/sales-plus/current/mule-sales-plus.xsd">
+    <flow name="wksfdc-account-snFlow">
+        <poll doc:name="Poll">
+            <fixed-frequency-scheduler frequency="60" timeUnit="SECONDS"/>
+            <sfdc:query config-ref="Salesforce__Basic_authentication" query="dsql:select Id,Fax, Phone, AccountNumber, RecordType.Name, AccountSourceY__c, Name, OwnerId, Description, Parent.Name, AnnualRevenue, Website, NumberOfEmployees, Remarks__c, chengweizhengshikehuField3__c, Area_daqu__c, daili_email__c, dailishangshuxingField3__c, Authorizeenddate__c, AuthorizeStarDate__c, AddressNote__c, AddressType__c, AddressEffective__c, QuaDomeCount__c, OrderReturnAmount__c, UnPayOrderAmountX__c, TwoIndustries__c, InvoiceAddress__c, TheRebateAmount_new__c, n_ServiceCode__c, CustomerServiceLevel__c, PayAmount_RebatesX__c, PayAmount_UnRebatesX__c, ResponsibleForCustomerSpecialist__c, Corporate_c__c, gongsikaihuhangField3__c, zhucedizhiField3__c, signdate__c, hire_total__c, intergrator_level__c, CustomerClassification__c, CustomerEngineerX__c, Kundtypklassificering__c, HistoryMobile__c, call_people__c, LinkPhone__c, LinkName__c, agentbrand__c, Identity__c, qianyuenianfenField3__c, AreaCode__c, County__c, qudaobianhaoField3__c, n_Partner__c, QDFDZE__c, ChannelType__c, QDSYFDJE__c, ChannelsViolations__c, RetentionMoney_New__c, Field1__c, UsingStateOfEquipment__c, IdentificationCode_c__c, IsServiceProvider__c, Whether__c, shifouyiheshi__c, IsMailAddress__c, shichanghuodongkehuField3__c, shiyongchanpin__c, Receive_Rebates__c, Receive_Retention__c, PaymentAmount__c, shoujihaoma__c, AuthorizedRegion__c, LicensingIndustry__c, TaxId_c__c, SellArea__c, City__c, suozaiquyu__c, Province__c, Statues__c, Field2__c, DetailedAddress__c, PrimaryIndustry__c, ChannelProCount__c, YYFDJE__c, yinhangzhanghaoField3__c, Influence__c, ZipCode__c, Email__c, BookAmoun_New__c, AvailableBalance_new__c, majorindustry__c, MainBusiness__c, majorbusiness__c, zhucezibenField3__c, zixunchanpinleixing__c, SalesNowID__c, sync_status__c from Account where sync_status__c ='&#21516;&#27493;&#22833;&#36133;' or sync_status__c='&#24453;&#21516;&#27493;'  limit 100" doc:name="Salesforce"/>
+        </poll>
+        <foreach doc:name="For Each">
+            <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            <set-variable variableName="obj" value="#[payload]" doc:name="Variable"/>
+            <custom-transformer class="com.sfdc.transformer.SFDCAccountTransformer" doc:name="Java"/>
+            <logger message="'SFDCAccountTransformer'---------#[payload]" level="INFO" doc:name="Logger"/>
+            <json:object-to-json-transformer doc:name="Object to JSON"/>
+            <object-to-string-transformer doc:name="Object to String"/>
+            <logger message="&quot;---------------hhh------&quot;+#[flowVars.obj.get(&quot;SalesNowID__c&quot;)]    #[flowVars.obj.get(&quot;SalesNowID__c&quot;)!=null&amp;&amp;flowVars.obj.get(&quot;SalesNowID__c&quot;)!=&quot;&quot;]   #[flowVars.obj.get(&quot;SalesNowID__c&quot;)==empty]   #[flowVars.obj.get(&quot;SalesNowID__c&quot;)!=empty]  " level="INFO" doc:name="Logger"/>
+            <choice doc:name="Choice">
+                <when expression="#[flowVars.obj.get(&quot;SalesNowID__c&quot;)==empty]">
+                    <logger message="--------------Create Account" level="INFO" doc:name="Logger"/>
+                    <sales-plus:create config-ref="SalesPlus__Basic_Auth" ObjectType="Accounts" doc:name="SalesPlus"/>
+                </when>
+                <otherwise>
+                    <logger message="-------Update Account" level="INFO" doc:name="Logger"/>
+                    <sales-plus:update config-ref="SalesPlus__Basic_Auth" ObjectType="Accounts" doc:name="SalesPlus"/>
+                </otherwise>
+            </choice>
+            <json:object-to-json-transformer doc:name="Object to JSON"/>
+            <logger message="-----------after create in SN --#[payload]" level="INFO" doc:name="Logger"/>
+            <json:json-to-object-transformer returnClass="org.mule.modules.salesplus.entities.SPResult" doc:name="JSON to Object"/>
+            <expression-component doc:name="Expression"><![CDATA[if(payload.success)
+{
+flowVars.obj.sync_status__c='同步成功';
+flowVars.obj.SalesNowID__c=payload.result.get("id");
+
+}
+else
+{
+flowVars.obj.sync_status__c='同步失败';
+}
+list=new ArrayList();
+list.add(flowVars.obj);
+payload=list;]]></expression-component>
+            <logger message="---------------After Transformer -------------------#[payload]" level="INFO" doc:name="Logger"/>
+            <sfdc:update config-ref="Salesforce__Basic_authentication" type="Account" doc:name="Salesforce">
+                <sfdc:objects ref="#[payload]"/>
+            </sfdc:update>
+            <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        </foreach>
+    </flow>
+</mule>
