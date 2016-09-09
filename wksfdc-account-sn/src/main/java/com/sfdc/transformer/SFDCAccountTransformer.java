@@ -30,6 +30,7 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 				HashMap<String, Object> accObj = new HashMap<String, Object>();
 				Object value  = null;
 	
+				/**
 				if(result.get("Fax")!= null && !(result.get("Fax").toString().isEmpty()))
 				{
 					accObj.put("Fax", result.get("Fax").toString());
@@ -44,16 +45,19 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 				{
 					accObj.put("RecordType", value.toString());
 				}
+				**/
 				value = result.get("Name");
 				if(result.get("Name") != null && !(value.toString().isEmpty()))
 				{
-					accObj.put("accountname", value.toString());
+					accObj.put("accountname", "xxxxxx");
 				}
+				/**
 				value = result.get("OwnerId");
 				if(result.get("OwnerId") != null && !(value.toString().isEmpty()))
 				{
 					accObj.put("OwnerId", value.toString());
 				}
+				
 				value = result.get("Description");
 				if(result.get("Description") != null && !(value.toString().isEmpty()))
 				{
@@ -66,6 +70,7 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 				}
 				value = result.get("Id");
 				accObj.put("sfdcid", result.get("Id"));
+				**/
 				accObj.put("assigned_user_id", "19x1");
 				message.setPayload(accObj);
 		} catch (Exception e) {
