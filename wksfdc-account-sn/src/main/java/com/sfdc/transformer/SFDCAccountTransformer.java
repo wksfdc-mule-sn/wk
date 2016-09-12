@@ -57,12 +57,6 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 				{
 					accObj.put("accountname", result.get("Name").toString());
 				}
-				/**
-				if(result.get("OwnerId") != null && !(result.get("OwnerId").toString().isEmpty()))
-				{
-					accObj.put("OwnerId", result.get("OwnerId").toString());
-				}
-				**/
 				if(result.get("Description") != null && !(result.get("Description").toString().isEmpty()))
 				{
 					accObj.put("description", result.get("Description").toString());
