@@ -23,11 +23,11 @@ http://www.mulesoft.org/schema/mule/sales-plus http://www.mulesoft.org/schema/mu
             <logger message="&quot;---------------hhh------&quot;+#[flowVars.obj.get(&quot;SalesNowID__c&quot;)]    #[flowVars.obj.get(&quot;SalesNowID__c&quot;)!=null&amp;&amp;flowVars.obj.get(&quot;SalesNowID__c&quot;)!=&quot;&quot;]   #[flowVars.obj.get(&quot;SalesNowID__c&quot;)==empty]   #[flowVars.obj.get(&quot;SalesNowID__c&quot;)!=empty]  " level="INFO" doc:name="Logger"/>
             <choice doc:name="Choice">
                 <when expression="#[flowVars.obj.get(&quot;SalesNowID__c&quot;)==empty]">
-                    <logger message="--------------Create Account" level="INFO" doc:name="Logger"/>
+                    <logger message="--------------Create Account" level="INFO" doc:name="Create logger"/>
                     <sales-plus:create config-ref="SalesPlus__Basic_Auth" ObjectType="Accounts" doc:name="SalesPlus"/>
                 </when>
                 <otherwise>
-                    <logger message="-------Update Account" level="INFO" doc:name="Logger"/>
+                    <logger message="-------Update Account" level="INFO" doc:name="Update Logger"/>
                     <sales-plus:update config-ref="SalesPlus__Basic_Auth" ObjectType="Accounts" doc:name="SalesPlus"/>
                 </otherwise>
             </choice>
