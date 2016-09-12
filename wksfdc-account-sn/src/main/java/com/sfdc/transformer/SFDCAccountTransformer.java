@@ -425,6 +425,10 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 				{
 					accObj.put("zixunchanpinleixing", result.get("zixunchanpinleixing__c"));
 				}
+				if(result.get("OwnerId") != null)
+				{
+					accObj.put("ownerId", result.get("OwnerId"));
+				}
 				if(result.get("SalesNowID__c") != null && !(result.get("SalesNowID__c").toString().isEmpty()))
 				{
 					accObj.put("Id",result.get("SalesNowID__c").toString());
