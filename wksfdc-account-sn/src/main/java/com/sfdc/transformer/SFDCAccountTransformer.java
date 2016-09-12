@@ -67,20 +67,6 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 				{
 					accObj.put("description", result.get("Description").toString());
 				}
-				/**
-				if(result.get("Parent") != null)
-				{
-					@SuppressWarnings("unchecked")
-					Map<String,String> mapPname = (Map<String, String>) result.get("Parent");
-					if(mapPname.get("Name") != null){
-							accObj.put("Parent", mapPname.get("Name"));
-					}
-				}
-				if(result.get("AnnualRevenue") != null && !(result.get("AnnualRevenue").toString().isEmpty()))
-				{
-					accObj.put("AnnualRevenue", result.get("AnnualRevenue").toString());
-				}
-				**/
 				if(result.get("Website") != null && !(result.get("Website").toString().isEmpty()))
 				{
 					accObj.put("website", result.get("Website").toString());
