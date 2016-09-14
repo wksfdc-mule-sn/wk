@@ -20,7 +20,7 @@ http://www.mulesoft.org/schema/mule/sales-plus http://www.mulesoft.org/schema/mu
             <logger message="'SFDCAccountTransformer'---------#[payload]" level="INFO" doc:name="Logger"/>
             <json:object-to-json-transformer doc:name="Object to JSON"/>
             <object-to-string-transformer doc:name="Object to String"/>
-            <logger message="&quot;---------------hhh------&quot;+#[flowVars.obj.get(&quot;SalesNowID__c&quot;)]    #[flowVars.obj.get(&quot;SalesNowID__c&quot;)!=null&amp;&amp;flowVars.obj.get(&quot;SalesNowID__c&quot;)!=&quot;&quot;]   #[flowVars.obj.get(&quot;SalesNowID__c&quot;)==empty]   #[flowVars.obj.get(&quot;SalesNowID__c&quot;)!=empty]  " level="INFO" doc:name="Logger"/>
+            <logger message="'---------Account SalesNowId--------'+#[flowVars.obj.get(&quot;SalesNowID__c&quot;)]    #[flowVars.obj.get(&quot;SalesNowID__c&quot;)!=null&amp;&amp;flowVars.obj.get(&quot;SalesNowID__c&quot;)!=&quot;&quot;]   #[flowVars.obj.get(&quot;SalesNowID__c&quot;)==empty]   #[flowVars.obj.get(&quot;SalesNowID__c&quot;)!=empty]  " level="INFO" doc:name="Logger"/>
             <choice doc:name="Choice">
                 <when expression="#[flowVars.obj.get(&quot;SalesNowID__c&quot;)==empty]">
                     <logger message="--------------Create Account" level="INFO" doc:name="Create logger"/>

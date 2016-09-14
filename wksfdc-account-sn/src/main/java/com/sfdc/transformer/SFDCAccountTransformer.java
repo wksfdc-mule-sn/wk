@@ -26,9 +26,9 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 				HashMap<String, Object> result =  (HashMap<String, Object>) message.getPayload();
 				LOGGER.debug("---------Account Item:-------"+result);
 				HashMap<String, Object> accObj = new HashMap<String, Object>();
-				if(result.get("Fax")!= null && !(result.get("Fax").toString().isEmpty()))
+				if(result.get("Fax")!= null)
 				{
-					accObj.put("fax", result.get("Fax").toString());
+					accObj.put("fax", result.get("Fax"));
 				}
 				if(result.get("Phone") != null && !(result.get("Phone").toString().isEmpty()))
 				{
@@ -49,20 +49,14 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 						accObj.put("recordtype", mapRname.get("Name"));
 					}
 				}
-				if(result.get("AccountSourceY__c") != null && !(result.get("AccountSourceY__c").toString().isEmpty()))
+				if(result.get("AccountSourceY__c") != null)
 				{
-					accObj.put("accountsource", result.get("AccountSourceY__c").toString());
+					accObj.put("accountsource", result.get("AccountSourceY__c"));
 				}
-				if(result.get("Name") != null && !(result.get("Name").toString().isEmpty()))
+				if(result.get("Name") != null)
 				{
-					accObj.put("accountname", result.get("Name").toString());
+					accObj.put("accountname", result.get("Name"));
 				}
-				/**
-				if(result.get("OwnerId") != null && !(result.get("OwnerId").toString().isEmpty()))
-				{
-					accObj.put("OwnerId", result.get("OwnerId").toString());
-				}
-				**/
 				if(result.get("Description") != null && !(result.get("Description").toString().isEmpty()))
 				{
 					accObj.put("description", result.get("Description").toString());
@@ -76,16 +70,17 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 							accObj.put("Parent", mapPname.get("Name"));
 					}
 				}
-				if(result.get("AnnualRevenue") != null && !(result.get("AnnualRevenue").toString().isEmpty()))
-				{
-					accObj.put("AnnualRevenue", result.get("AnnualRevenue").toString());
-				}
 				**/
-				if(result.get("Website") != null && !(result.get("Website").toString().isEmpty()))
+				if(result.get("AnnualRevenue") != null)
 				{
-					accObj.put("website", result.get("Website").toString());
+					accObj.put("annual_revenue", result.get("AnnualRevenue"));
 				}
-				if(result.get("NumberOfEmployees") != null && !(result.get("NumberOfEmployees").toString().isEmpty()))
+				
+				if(result.get("Website") != null)
+				{
+					accObj.put("website", result.get("Website"));
+				}
+				if(result.get("NumberOfEmployees") != null)
 				{
 					accObj.put("numberofemployees", result.get("NumberOfEmployees").toString());
 				}
@@ -429,9 +424,9 @@ public class SFDCAccountTransformer extends AbstractMessageTransformer{
 				{
 					accObj.put("ownerId", result.get("OwnerId"));
 				}
-				if(result.get("SalesNowID__c") != null && !(result.get("SalesNowID__c").toString().isEmpty()))
+				if(result.get("SalesNowID__c") != null)
 				{
-					accObj.put("Id",result.get("SalesNowID__c").toString());
+					accObj.put("id",result.get("SalesNowID__c"));
 				}
 				accObj.put("sfdcid", result.get("Id").toString());
 				accObj.put("assigned_user_id", "19x1");
